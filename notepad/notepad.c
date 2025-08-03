@@ -135,6 +135,9 @@ TCHAR *szFile           = (TCHAR*) IDS_FILE;
 TCHAR *szWindowsFile	= (TCHAR*) IDS_LT_WINDOWS;
 TCHAR *szUnixFile		= (TCHAR*) IDS_LT_UNIX;
 
+// additional file type strings
+TCHAR *szFtAutoDetect   = (TCHAR*) IDS_FT_AUTODETECT;
+
 
 TCHAR **rgsz[CSTRINGS] = {
         &szDiskError,
@@ -184,6 +187,7 @@ TCHAR **rgsz[CSTRINGS] = {
         &szLetters,
 		&szWindowsFile,
 		&szUnixFile,
+        &szFtAutoDetect,
 };
 
 
@@ -320,20 +324,24 @@ UINT_PTR APIENTRY NpSaveDialogHookProc(
     switch( msg )
     {
         case WM_INITDIALOG:
-            // Warning: the order here must be the same as NP_FILETYPE
+            // Warning: the order here must be the same as NP_FILETYPE - 1
 
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtAnsi );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtUnicode );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtUnicodeBe );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtUtf8 );
+            if ( GetACP() == CODEPAGE_GBK )
+                SendDlgItemMessage(hWnd, IDC_FILETYPE, CB_ADDSTRING, 0, TEXT("GB18030"));
 
             szSelect= szFtAnsi;         // default
             g_ftSaveAs= g_ftOpenedAs;   // default: save as same type as opened
             switch( g_ftSaveAs )
             {
-                case FT_UNICODE:   szSelect= szFtUnicode;   break;
-                case FT_UNICODEBE: szSelect= szFtUnicodeBe; break;
-                case FT_UTF8:      szSelect= szFtUtf8;      break;
+                case FT_ANSI:      szSelect= szFtAnsi;        break;
+                case FT_UNICODE:   szSelect= szFtUnicode;     break;
+                case FT_UNICODEBE: szSelect= szFtUnicodeBe;   break;
+                case FT_UTF8:      szSelect= szFtUtf8;        break;
+                case FT_GB18030:   szSelect= TEXT("GB18030"); break;
                 default: break;
             }
 
@@ -341,7 +349,7 @@ UINT_PTR APIENTRY NpSaveDialogHookProc(
             break;
 
         case WM_COMMAND:
-            g_ftSaveAs= (NP_FILETYPE) SendDlgItemMessage( hWnd, IDC_FILETYPE, CB_GETCURSEL, 0, 0 );
+            g_ftSaveAs= (NP_FILETYPE) SendDlgItemMessage( hWnd, IDC_FILETYPE, CB_GETCURSEL, 0, 0 ) + 1;
             break;
 
         case WM_HELP:
@@ -417,17 +425,22 @@ UINT_PTR APIENTRY NpOpenDialogHookProc(
         case WM_INITDIALOG:
             // Warning: the order here must be the same as NP_FILETYPE
 
+            SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtAutoDetect );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtAnsi );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtUnicode );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtUnicodeBe );
             SendDlgItemMessage(hWnd, IDC_FILETYPE,CB_ADDSTRING, 0, (LPARAM) szFtUtf8 );
+            if ( GetACP() == CODEPAGE_GBK )
+                SendDlgItemMessage(hWnd, IDC_FILETYPE, CB_ADDSTRING, 0, TEXT("GB18030"));
 
-            szSelect= szFtAnsi;         // default
+            szSelect= szFtAutoDetect;         // default
             switch( g_ftOpenedAs )
             {
-                case FT_UNICODE:   szSelect= szFtUnicode;   break;
-                case FT_UNICODEBE: szSelect= szFtUnicodeBe; break;
-                case FT_UTF8:      szSelect= szFtUtf8;      break;
+                case FT_ANSI:      szSelect= szFtAnsi;        break;
+                case FT_UNICODE:   szSelect= szFtUnicode;     break;
+                case FT_UNICODEBE: szSelect= szFtUnicodeBe;   break;
+                case FT_UTF8:      szSelect= szFtUtf8;        break;
+                case FT_GB18030:   szSelect= TEXT("GB18030"); break;
                 default: break;
             }
 

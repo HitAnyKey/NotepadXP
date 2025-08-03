@@ -24,16 +24,21 @@
 
 typedef enum _NP_FILETYPE {
    FT_UNKNOWN=-1,
-   FT_ANSI=0,
-   FT_UNICODE=1,
-   FT_UNICODEBE=2,
-   FT_UTF8=3,
+   FT_AUTODETECT=0,
+   FT_ANSI=1,
+   FT_UNICODE=2,
+   FT_UNICODEBE=3,
+   FT_UTF8=4,
+   FT_GB18030=5,
 } NP_FILETYPE;
 
 typedef enum _NP_LINETYPE {
 	LT_WINDOWS = 0,
 	LT_UNIX = 1,
 } NP_LINETYPE;
+
+#define CODEPAGE_GBK 936
+#define GB18030_CODEPAGE 54936
 
 #define BOM_UTF8_HALF        0xBBEF
 #define BOM_UTF8_2HALF       0xBF
@@ -191,7 +196,9 @@ typedef enum _NP_LINETYPE {
 #define IDS_LT_WINDOWS		 46
 #define IDS_LT_UNIX			 47
 
-#define CSTRINGS             47    /* cnt of stringtable strings from .rc file */
+#define IDS_FT_AUTODETECT    48 /* auto-detect         */
+
+#define CSTRINGS             48    /* cnt of stringtable strings from .rc file */
 
 // This string is used by MUI for the "FriendlyTypeName".
 // See reference to it in hivecls.inx
@@ -300,6 +307,8 @@ extern TCHAR   *szCurrentPage;
 extern TCHAR   *szHeader;
 extern TCHAR   *szFooter;
 extern TCHAR   *szLetters;
+
+extern TCHAR   *szFtAutoDetect;
 
 /* variables for the new File/Open and File/Saveas dialogs */
 extern OPENFILENAME OFN;        /* passed to the File Open/save APIs */

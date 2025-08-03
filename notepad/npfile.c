@@ -70,6 +70,10 @@ BOOL AnsiWriteFile(HANDLE  hFile,    // file to write to
     if( uCodePage != CP_UTF8 )
     {
         pfDefCharUsed= &fDefCharUsed;
+        if ( uCodePage == GB18030_CODEPAGE )
+        {
+            pfDefCharUsed = NULL;
+        }
     }
 
     // 
@@ -300,9 +304,14 @@ BOOL FAR SaveFile (HWND hwndParent, TCHAR *szFileSave, BOOL fSaveAs )
         WriteFile( fp, &BOM_UTF8, 3, &nBytesWritten, NULL );        
         // fall through to convert and write the file
 
+    // the fall through from utf-8 to here doesn't matter since utf-8 overwrites
+    // cpTemp anyway
+    case FT_GB18030:
+        cpTemp = GB18030_CODEPAGE;
+
     default:
 
-        if (g_ftSaveAs != FT_UTF8)
+        if (g_ftSaveAs != FT_UTF8 && g_ftSaveAs != FT_GB18030)
         {
             //
             // Always use the current locale code page to do the translation
@@ -316,10 +325,15 @@ BOOL FAR SaveFile (HWND hwndParent, TCHAR *szFileSave, BOOL fSaveAs )
             pfDefCharUsed= &fDefCharUsed;
             dwFlags= WC_NO_BEST_FIT_CHARS;
         }
-        else 
+        else if (g_ftSaveAs == FT_UTF8)
         {
             cpTemp= CP_UTF8;
             pfDefCharUsed= NULL;    // these must be NULL and 0 for this code page
+            dwFlags= 0;
+        }
+        else
+        {
+            pfDefCharUsed= NULL;
             dwFlags= 0;
         }
         
@@ -675,6 +689,11 @@ BOOL FAR LoadFile (TCHAR * sz, INT typeFlag )
             }
             break;
 
+        case FT_GB18030:
+            
+            cpTemp= GB18030_CODEPAGE;
+            ftOpenedAs = FT_GB18030;
+            break;
 
         case FT_ANSI:
         default:

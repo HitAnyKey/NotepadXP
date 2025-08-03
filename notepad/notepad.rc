@@ -46,24 +46,28 @@
 //               disable all find/replace and goto menu items when no text in the notepad
 //               implement Ctrl+Shift+N shortcut & menu item for new window
 //               make new notepad windows open cascaded
+// 
+// 1, 4, 0, 0 -> change version info.
+//               change x86 subsys ver to 5.1
+//               add "auto-detect" encoding option to open dialog
 //               
 // Note: PRODUCTVERSION == FILEVERSION
 1 VERSIONINFO
-	FILEVERSION 1, 3, 0, 1
-	PRODUCTVERSION 1, 3, 0, 1
+	FILEVERSION 1, 4, 0, 0
+	PRODUCTVERSION 1, 4, 0, 0
 	FILEOS VOS_NT_WINDOWS32
 	FILETYPE VFT_APP
 BEGIN
 	BLOCK "StringFileInfo" {
 		BLOCK "040904B0" {
-			VALUE "Comments", "https://github.com/vxiiduu/NotepadEx"
-			VALUE "FileDescription", "Notepad"
-			VALUE "FileVersion", "1.3.0.1"
-			VALUE "InternalName", "Notepad"
-			VALUE "LegalCopyright", "https://github.com/vxiiduu/NotepadEx"
+			VALUE "Comments", "https://github.com/aubymori/NotepadXP"
+			VALUE "FileDescription", "NotepadXP"
+			VALUE "FileVersion", "1.4.0.0"
+			VALUE "InternalName", "NotepadXP"
+			VALUE "LegalCopyright", "https://github.com/aubymori/NotepadXP"
 			VALUE "OriginalFilename", "NOTEPAD.EXE"
-			VALUE "ProductName", "NotepadEx"
-			VALUE "ProductVersion", "1.3.0.1"
+			VALUE "ProductName", "NotepadXP"
+			VALUE "ProductVersion", "1.4.0.0"
 		}
 	}
 
@@ -233,8 +237,8 @@ BEGIN
     IDS_LINETOOLARGE "Line number out of range"
 
     IDS_FT_ANSI      "ANSI"
-    IDS_FT_UNICODE   "Unicode"
-    IDS_FT_UNICODEBE "Unicode big endian"
+    IDS_FT_UNICODE   "UTF-16 LE"
+    IDS_FT_UNICODEBE "UTF-16 BE"
     IDS_FT_UTF8      "UTF-8"
 
     IDS_CURRENT_PAGE "Page %d"  /* don't change %d; used for printf formatting */
@@ -259,6 +263,8 @@ BEGIN
 
 	IDS_LT_WINDOWS   "   Windows (CRLF)  "
 	IDS_LT_UNIX		 "   Unix (LF)  "
+
+    IDS_FT_AUTODETECT "Auto-Detect"
 END
 
 /* Include other dialogs. */
