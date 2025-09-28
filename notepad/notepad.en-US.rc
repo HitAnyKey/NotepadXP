@@ -1,0 +1,260 @@
+#include "notepad.h"
+
+ID_MENUBAR  MENU PRELOAD DISCARDABLE
+BEGIN
+    POPUP   "&File"
+        BEGIN
+            MENUITEM    "&New\tCtrl+N",							M_NEW
+			MENUITEM	"New &Window\tCtrl+Shift+N",			M_NEWWIN
+            MENUITEM    "&Open...\tCtrl+O",						M_OPEN
+            MENUITEM    "&Save\tCtrl+S",						M_SAVE
+            MENUITEM    "Save &As...\tCtrl+Shift+S",			M_SAVEAS
+            MENUITEM    SEPARATOR
+            MENUITEM    "Page Set&up...",						M_PAGESETUP
+            MENUITEM    "&Print...\tCtrl+P",					M_PRINT
+            MENUITEM    SEPARATOR
+            MENUITEM    "E&xit",								M_EXIT
+        END
+
+    POPUP   "&Edit"
+        BEGIN
+            MENUITEM    "&Undo\tCtrl+Z",        M_UNDO
+            MENUITEM    SEPARATOR
+            MENUITEM    "Cu&t\tCtrl+X",         M_CUT ,  GRAYED
+            MENUITEM    "&Copy\tCtrl+C",        M_COPY,  GRAYED
+            MENUITEM    "&Paste\tCtrl+V",       M_PASTE, GRAYED
+            MENUITEM    "De&lete\tDel",         M_CLEAR, GRAYED
+            MENUITEM    SEPARATOR
+            MENUITEM    "&Find...\tCtrl+F",     M_FIND
+            MENUITEM    "Find &Next\tF3",       M_FINDNEXT
+			MENUITEM	"Find Pre&vious\tShift+F3", M_FINDPREVIOUS
+            MENUITEM    "&Replace...\tCtrl+H",  M_REPLACE
+/*
+            The hotkey used for replace is CTRL-H in most of the editors, and hence though 
+            this key may conflict with backspace key in IMEs, this key is used here to be compatible
+            with all the editors. Please contact ChrisW/RajeshM for more details.
+*/
+            MENUITEM    "&Go To...\tCtrl+G",    M_GOTO
+            MENUITEM    SEPARATOR
+            MENUITEM    "Select &All\tCtrl+A",  M_SELECTALL
+            MENUITEM    "Time/&Date\tF5",       M_DATETIME
+        END
+
+    POPUP   "F&ormat"
+        BEGIN
+            MENUITEM    "&Word Wrap"      M_WW
+            MENUITEM    "&Font...",       M_SETFONT
+
+			POPUP		"&Tab Width"
+				BEGIN
+					MENUITEM	"&2"		M_TW2
+					MENUITEM	"&4"		M_TW4
+					MENUITEM	"&8"		M_TW8
+				END
+        END
+
+    POPUP   "&View"
+        BEGIN
+            MENUITEM "&Status Bar",             M_STATUSBAR
+        END
+
+    POPUP "&Help"
+        BEGIN
+            MENUITEM     "&Help Topics",  M_HELP
+            MENUITEM     SEPARATOR
+            MENUITEM     "&About Notepad",M_ABOUT
+        END
+
+END
+
+STRINGTABLE PRELOAD DISCARDABLE
+BEGIN
+    IDS_MERGE1       "%%"
+    IDS_DISKERROR   "Cannot open the %% file.\n\nMake sure a disk is in the drive you specified."
+    IDS_FNF         "Cannot find the %% file.\n\nDo you want to create a new file?"
+    IDS_SCBC        "The text in the %% file has changed.\n\nDo you want to save the changes?"
+    IDS_UNTITLED    "Untitled"
+    IDS_NOTEPAD     " - Notepad"
+    IDS_CFS         "Cannot find ""%%"""
+    /* The following is a generic out of memory message which can also be
+       system modal so no /n can appear in it. */
+    IDS_ERRSPACE    "Not enough memory available to complete this operation. Quit one or more applications to increase available memory, and then try again."
+    IDS_FTL         "The %% file is too large for Notepad.\n\nUse another editor to edit the file."
+    IDS_NN          "Notepad"
+    IDS_COMMDLGINIT "Failed to Initialize File Dialogs. Change the Filename and try again."
+    IDS_PRINTDLGINIT "Failed to Initialize Print Dialogs. Make sure that your printer is connected properly and use Control Panel to verify that the printer is configured properly."
+    IDS_CANTPRINT   "Cannot print the %% file. Be sure that your printer is connected properly and use Control Panel to verify that the printer is configured properly."
+    IDS_NVF         "Not a valid file name."
+    IDS_CREATEERR   "Cannot create the %% file.\n\nMake sure that the path and filename are correct."
+    IDS_NOWW        "Cannot carry out the Word Wrap command because there is too much text in the file."
+    IDS_HELPFILE    "notepad.hlp"
+    IDS_HEADER      "&f"
+    IDS_FOOTER      "Page &p"
+
+    IDS_ACCESSDENY  "%%\nYou do not have permission to open this file.  See the owner of the file or an administrator to obtain permission."
+
+
+    IDS_ANSITEXT    "Text Documents (*.txt)" /* filter text for File/Open */
+    IDS_ALLFILES    "All Files "   /* filter text for File/Open  */
+    IDS_OPENCAPTION "Open"      /* title for file/open dialog */
+    IDS_SAVECAPTION "Save As"   /* title for file/save dialog */
+    IDS_CANNOTQUIT  "You cannot quit Windows because the Save As dialog\nbox in Notepad is open.  Switch to Notepad, close this\ndialog box, and then try quitting Windows again."
+    IDS_LOADDRVFAIL "Cannot access your printer.\nBe sure that your printer is connected properly and use Control Panel to verify that the printer is configured properly."
+    IDS_ERRUNICODE  "%%\n This file contains characters in Unicode format which will be lost if you save this file as an ANSI encoded text file. To keep the Unicode information, click Cancel below and then select one of the Unicode options from the Encoding drop down list. Continue?"
+    IDS_FONTTOOBIG  "Page too small to print one line.\nTry printing using smaller font."
+    IDS_COMMDLGERR  "Common Dialog error (0x%04x)"
+
+    IDS_LINEERROR    "Notepad - Goto Line"
+    IDS_LINETOOLARGE "Line number out of range"
+
+    IDS_FT_ANSI      "ANSI"
+    IDS_FT_UNICODE   "UTF-16 LE"
+    IDS_FT_UNICODEBE "UTF-16 BE"
+    IDS_FT_UTF8      "UTF-8"
+
+    IDS_CURRENT_PAGE "Page %d"  /* don't change %d; used for printf formatting */
+
+    IDS_LINECOL          "   Ln %d, Col %d  "
+    IDS_COMPRESSED_FILE  " Compressed,"
+    IDS_ENCRYPTED_FILE   " Encrypted,"
+    IDS_HIDDEN_FILE      " Hidden,"
+    IDS_OFFLINE_FILE     " Offline,"
+    IDS_READONLY_FILE    " ReadOnly,"
+    IDS_SYSTEM_FILE      " System,"
+    IDS_FILE             " File"
+
+    /* Use by MUI, not notepad.  See hivecls.inx for reference */
+
+    IDS_TEXT_FRIENDLY_NAME  "Text Document"
+
+    /*  IDS_LETTERS     "fFpPtTdDcCrRlL"   Original US values.  This does get translated! */
+    /*                  The order is: File, Page, Time, Date, Center, Right, Left         */
+
+    IDS_LETTERS     "fFpPtTdDcCrRlL"
+
+	IDS_LT_WINDOWS   "   Windows (CRLF)  "
+	IDS_LT_UNIX		 "   Unix (LF)  "
+
+    IDS_FT_AUTODETECT "Auto-Detect"
+END
+
+#define WS_TABONLY  (WS_TABSTOP | WS_GROUP)
+#define ID_NULL   -1
+
+#define WIDTHPRINTDLG 200
+
+IDD_ABORTPRINT DIALOG 20,20,WIDTHPRINTDLG, 64
+    STYLE WS_POPUPWINDOW | DS_MODALFRAME | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+    CAPTION "Notepad"
+    FONT 8 "MS Shell Dlg"
+    BEGIN
+       defpushbutton "Cancel"   IDCANCEL, 84, 44, 32, 14, GRP
+       ctext    "Now Printing",  -1, 0, 8, WIDTHPRINTDLG, 8
+       ctext    "",             ID_FILENAME, 0, 18, WIDTHPRINTDLG, 8,  SS_PATHELLIPSIS | SS_CENTER
+       ctext    "",             ID_PAGENUMBER, 0, 28, WIDTHPRINTDLG, 8, SS_CENTER
+    END
+
+NpEncodingDialog DIALOG 30, 17, 300, 22
+STYLE WS_CHILD | DS_3DLOOK | WS_CLIPSIBLINGS | DS_CONTEXTHELP | DS_CONTROL
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CONTROL "&Encoding:", IDC_ENCODING, "static" SS_LEFT , 68,1, 40,40
+    COMBOBOX IDC_FILETYPE, 130,0, 164,100, CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+END
+
+IDD_PAGESETUP DIALOG DISCARDABLE 0, 0, 356, 196
+STYLE DS_MODALFRAME | 4L | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CONTEXTHELP
+CAPTION "Page Setup"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    GROUPBOX        "Paper",1073,8,8,224,56,WS_GROUP
+    LTEXT           "Si&ze:",1089,16,24,36,8
+    COMBOBOX        1137,64,23,160,160,CBS_DROPDOWNLIST | CBS_SORT |
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    LTEXT           "&Source:",1090,16,45,36,8
+    COMBOBOX        1138,64,42,160,160,CBS_DROPDOWNLIST | CBS_SORT |
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    GROUPBOX        "Orientation",1072,8,69,64,56,WS_GROUP
+    CONTROL         "P&ortrait",1056,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,16,82,52,12
+    CONTROL         "L&andscape",1057,"Button",BS_AUTORADIOBUTTON,16,103,52,
+                    12
+    GROUPBOX        "Margins",1075,80,69,152,56,WS_GROUP
+    LTEXT           "&Left:",1102,88,85,32,8
+    EDITTEXT        1155,120,82,28,12,WS_GROUP
+    LTEXT           "&Right:",1103,164,85,32,8
+    EDITTEXT        1157,196,82,28,12,WS_GROUP
+    LTEXT           "&Top:",1104,88,104,32,8
+    EDITTEXT        1156,120,103,28,12,WS_GROUP
+    LTEXT           "&Bottom:",1105,164,104,32,8
+    EDITTEXT        1158,196,103,28,12,WS_GROUP
+    LTEXT           "&Header:",ID_HEADER_LABEL,8,135,29,8
+    EDITTEXT        ID_HEADER,56,134,174,12,ES_AUTOHSCROLL
+    LTEXT           "&Footer:",ID_FOOTER_LABEL,8,154,29,8
+    EDITTEXT        ID_FOOTER,56,153,174,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,190,174,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,244,174,50,14
+    PUSHBUTTON      "&Printer...",1026,298,174,50,14
+    GROUPBOX        "Preview",-1,240,8,108,158
+    CONTROL         "",1080,"Static",SS_WHITERECT,254,46,80,80
+    CONTROL         "",1081,"Static",SS_GRAYRECT,334,50,4,80
+    CONTROL         "",1082,"Static",SS_GRAYRECT,262,122,80,4
+END
+
+IDD_GOTODIALOG DIALOG DISCARDABLE  0, 0, 180, 57
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CONTEXTHELP
+CAPTION "Goto line"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "&Line Number:", 1200, 7, 9, 50, 10
+    EDITTEXT        IDC_GOTO,55,7,57,12,ES_AUTOHSCROLL+ES_NUMBER
+    DEFPUSHBUTTON   "OK",IDOK,7,34,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,78,34,50,14
+END
+
+IDD_FINDDIALOG DIALOG LOADONCALL MOVEABLE DISCARDABLE 30, 73, 236, 74
+STYLE WS_BORDER | WS_CAPTION | DS_MODALFRAME | WS_POPUP | WS_SYSMENU |
+      DS_3DLOOK
+CAPTION "Find"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Fi&nd what:", -1, 4, 8, 42, 8
+    EDITTEXT        edt1, 47, 7, 128, 12, WS_GROUP | WS_TABSTOP | ES_AUTOHSCROLL
+
+    AUTOCHECKBOX    "Match &whole word only", chx1, 6, 26, 100, 12, WS_GROUP
+    AUTOCHECKBOX    "Match &case", chx2, 6, 42, 64, 12
+	AUTOCHECKBOX	"Wrap &around", chx4, 6, 58, 70, 12
+
+    GROUPBOX        "Direction", grp1, 107, 26, 68, 28, WS_GROUP
+    AUTORADIOBUTTON "&Up", rad1, 111, 38, 25, 12, WS_GROUP
+    AUTORADIOBUTTON "&Down", rad2, 138, 38, 35, 12
+
+    DEFPUSHBUTTON   "&Find Next", IDOK, 182, 5, 50, 14, WS_GROUP
+    PUSHBUTTON      "Cancel", IDCANCEL, 182, 23, 50, 14
+    PUSHBUTTON      "&Help", pshHelp, 182, 45, 50, 14
+END
+
+
+IDD_REPLACEDIALOG DIALOG LOADONCALL MOVEABLE DISCARDABLE 36, 44, 230, 94
+STYLE WS_BORDER | WS_CAPTION | DS_MODALFRAME | WS_POPUP | WS_SYSMENU |
+      DS_3DLOOK
+CAPTION "Replace"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Fi&nd what:", -1, 4, 9, 48, 8
+    EDITTEXT        edt1, 54, 7, 114, 12, WS_GROUP | WS_TABSTOP | ES_AUTOHSCROLL
+
+    LTEXT           "Re&place with:", -1, 4, 26, 48, 8
+    EDITTEXT        edt2, 54, 24, 114, 12, WS_GROUP | WS_TABSTOP | ES_AUTOHSCROLL
+
+    AUTOCHECKBOX    "Match &whole word only", chx1, 6, 46, 104, 12, WS_GROUP
+    AUTOCHECKBOX    "Match &case", chx2, 6, 62, 59, 12
+	AUTOCHECKBOX	"Wrap &around", chx4, 6, 78, 64, 12
+
+    DEFPUSHBUTTON   "&Find Next", IDOK, 174, 4, 50, 14, WS_GROUP
+    PUSHBUTTON      "&Replace", psh1, 174, 21, 50, 14
+    PUSHBUTTON      "Replace &All", psh2, 174, 38, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 174, 55, 50, 14
+    PUSHBUTTON      "&Help", pshHelp, 174, 75, 50, 14
+END
+

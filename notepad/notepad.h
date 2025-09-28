@@ -4,6 +4,7 @@
 #define NOSOUND
 #include <Windows.h>
 #include <WindowsX.h>
+#include <HtmlHelp.h>
 
 #define STATIC static
 #define CONST const
@@ -21,6 +22,11 @@
 
 /* handy debug macro */
 #define ODS OutputDebugString
+
+#define GRP      WS_GROUP
+#define TAB      WS_TABSTOP
+#define TABGRP   WS_TABSTOP | WS_GROUP
+#define DLGMODAL WS_POPUP | WS_DLGFRAME
 
 typedef enum _NP_FILETYPE {
    FT_UNKNOWN=-1,
